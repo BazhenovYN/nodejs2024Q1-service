@@ -1,25 +1,29 @@
 import { Injectable } from '@nestjs/common';
+
+import { DatabaseService } from 'database/database.service';
 import { CreateArtistDto, UpdateArtistDto } from './dto';
 
 @Injectable()
 export class ArtistService {
-  create(createArtistDto: CreateArtistDto) {
-    return 'This action adds a new artist';
+  constructor(private db: DatabaseService) {}
+
+  create(dto: CreateArtistDto) {
+    return this.db.artists.create(dto);
   }
 
   findAll() {
-    return `This action returns all artist`;
+    return this.db.artists.findAll();
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} artist`;
+    return this.db.artists.findOne(id);
   }
 
-  update(id: string, updateArtistDto: UpdateArtistDto) {
-    return `This action updates a #${id} artist`;
+  update(id: string, dto: UpdateArtistDto) {
+    return this.db.artists.update(id, dto);
   }
 
   remove(id: string) {
-    return `This action removes a #${id} artist`;
+    return this.db.artists.remove(id);
   }
 }
