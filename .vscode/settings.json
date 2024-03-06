@@ -1,6 +1,6 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.words": ["favs", "nestjs", "signin", "signup"],
+  "cSpell.words": ["favs", "nestjs", "signin", "signup", "uuidv"],
   "editor.formatOnSave": true,
   "[typescript]": {
     "editor.codeActionsOnSave": {
