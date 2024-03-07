@@ -12,10 +12,12 @@ import {
   Put,
   UseInterceptors,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { CreateUserDto, UpdatePasswordDto } from './dto';
 import { UserService } from './user.service';
 
+@ApiTags('Users')
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
 export class UserController {
