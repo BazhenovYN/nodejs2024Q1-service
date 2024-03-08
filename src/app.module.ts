@@ -1,18 +1,18 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import { ArtistModule } from './artist/artist.module';
-import { configuration } from './config';
-import { DatabaseModule } from './database/database.module';
-import { UserModule } from './user/user.module';
-import { TrackModule } from './track/track.module';
-import { AlbumModule } from './album/album.module';
-import { FavoritesModule } from './favorites/favorites.module';
+import { AlbumModule } from 'album/album.module';
+import { ArtistModule } from 'artist/artist.module';
+import { appConfig } from 'config';
+import { DatabaseModule } from 'database/database.module';
+import { FavoritesModule } from 'favorites/favorites.module';
+import { TrackModule } from 'track/track.module';
+import { UserModule } from 'user/user.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [configuration],
+      load: [appConfig],
       isGlobal: true,
     }),
     UserModule,
