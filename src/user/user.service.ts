@@ -1,4 +1,10 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 
 import { DatabaseService } from 'database/database.service';
 import { CreateUserDto, UpdatePasswordDto } from './dto';
@@ -7,8 +13,16 @@ import { CreateUserDto, UpdatePasswordDto } from './dto';
 export class UserService {
   constructor(private db: DatabaseService) {}
 
-  create(dto: CreateUserDto) {
-    return this.db.users.create(dto);
+  private async hashPassword(password: string) {
+    return bcrypt.hash(password, 10);
+  }
+
+  async create(dto: CreateUserDto) {
+    const hash = await this.hashPassword(dto.password);
+    return this.db.users.create({
+      ...dto,
+      password: hash,
+    });
   }
 
   findAll() {
@@ -25,11 +39,20 @@ export class UserService {
     return user;
   }
 
-  updatePassword(id: string, dto: UpdatePasswordDto) {
+  async updatePassword(id: string, dto: UpdatePasswordDto) {
     if (dto.newPassword === dto.oldPassword) {
       throw new BadRequestException('The new password matches the old password');
     }
-    return this.db.users.update(id, { password: dto.newPassword });
+
+    const user = this.db.users.findOne(id);
+    const match = await bcrypt.compare(dto.oldPassword, user.password);
+    if (!match) {
+      throw new ForbiddenException('Old password incorrect');
+    }
+
+    const hash = await this.hashPassword(dto.newPassword);
+
+    return this.db.users.update(id, { password: hash });
   }
 
   remove(id: string) {

@@ -7,9 +7,11 @@ import { User } from 'user/entities';
 export class UserStorageService {
   private users = new Map<string, User>();
 
-  create(dto: CreateUserDto): User {
+  async create(dto: CreateUserDto) {
     const user = new User(dto);
+
     this.users.set(user.id, user);
+
     return user;
   }
 

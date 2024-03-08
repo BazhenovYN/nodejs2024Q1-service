@@ -17,8 +17,12 @@ export class ArtistStorageService {
     return [...this.artists.values()];
   }
 
-  findOne(id: string): Artist {
-    const artist = this.artists.get(id);
+  findOne(id: string): Artist | null {
+    return this.artists.get(id) ?? null;
+  }
+
+  findOneOrThrow(id: string): Artist {
+    const artist = this.findOne(id);
     if (!artist) {
       throw new NotFoundException('Artist not found');
     }
@@ -26,7 +30,7 @@ export class ArtistStorageService {
   }
 
   update(id: string, dto: UpdateArtistDto): Artist {
-    const artist = this.findOne(id);
+    const artist = this.findOneOrThrow(id);
 
     Object.assign(artist, dto);
 
@@ -34,7 +38,7 @@ export class ArtistStorageService {
   }
 
   remove(id: string): void {
-    const artist = this.findOne(id);
+    const artist = this.findOneOrThrow(id);
     this.artists.delete(artist.id);
   }
 }
