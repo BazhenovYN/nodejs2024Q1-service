@@ -7,12 +7,12 @@ export class CreateTrackDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiPropertyOptional({ example: '0a35dd62-e09f-444b-a628-f4e7c6954f57' })
+  @ApiPropertyOptional({ type: String, format: 'uuid' })
   @IsUUID()
   @IsOptional()
   artistId: string | null;
 
-  @ApiPropertyOptional({ example: '8835d462-e09f-444b-a628-f4e7c6954125' })
+  @ApiPropertyOptional({ type: String, format: 'uuid' })
   @IsUUID()
   @IsOptional()
   albumId: string | null;

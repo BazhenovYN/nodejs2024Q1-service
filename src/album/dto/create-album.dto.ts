@@ -2,17 +2,17 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsInt, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateAlbumDto {
-  @ApiProperty({ example: 'Mutter', required: true })
+  @ApiProperty({ example: 'Innuendo' })
   @IsString()
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ example: 2001, required: true })
+  @ApiProperty({ example: 2001 })
   @IsNotEmpty()
   @IsInt()
   year: number;
 
-  @ApiPropertyOptional({ example: '8515dd62-859f-444b-a628-f4e7c6954f57', required: true })
+  @ApiPropertyOptional({ type: String, format: 'uuid' })
   @IsUUID()
   @IsOptional()
   artistId: string | null;
