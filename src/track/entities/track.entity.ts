@@ -5,7 +5,7 @@ export class Track {
   @ApiProperty({ format: 'uuid' })
   id: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'The Show Must Go On' })
   name: string;
 
   @ApiPropertyOptional({ type: String, format: 'uuid' })
@@ -14,7 +14,7 @@ export class Track {
   @ApiPropertyOptional({ type: String, format: 'uuid' })
   albumId: string | null;
 
-  @ApiProperty()
+  @ApiProperty({ example: 262 })
   duration: number;
 
   constructor(partial: Partial<Track>) {

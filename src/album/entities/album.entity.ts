@@ -5,10 +5,10 @@ export class Album {
   @ApiProperty({ format: 'uuid' })
   id: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Innuendo' })
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 1991 })
   year: number;
 
   @ApiPropertyOptional({ type: String, format: 'uuid' })

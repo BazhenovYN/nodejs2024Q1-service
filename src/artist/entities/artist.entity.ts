@@ -5,7 +5,7 @@ export class Artist {
   @ApiProperty({ format: 'uuid' })
   id: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Freddie Mercury' })
   name: string;
 
   @ApiProperty()

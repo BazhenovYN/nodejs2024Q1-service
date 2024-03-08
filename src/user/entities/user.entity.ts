@@ -6,19 +6,19 @@ export class User {
   @ApiProperty({ format: 'uuid' })
   id: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'TestUser' })
   login: string;
 
   @Exclude()
   password: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   version: number;
 
-  @ApiProperty()
+  @ApiProperty({ example: 1709931941478 })
   createdAt: number;
 
-  @ApiProperty()
+  @ApiProperty({ example: 1709932741613 })
   updatedAt: number;
 
   constructor(partial: Partial<User>) {
