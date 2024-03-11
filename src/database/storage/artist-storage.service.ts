@@ -17,6 +17,10 @@ export class ArtistStorageService {
     return [...this.artists.values()];
   }
 
+  findMany(ids: string[]): Artist[] {
+    return ids.map((id) => this.findOne(id)).filter((artist): artist is Artist => artist !== null);
+  }
+
   findOne(id: string): Artist | null {
     return this.artists.get(id) ?? null;
   }

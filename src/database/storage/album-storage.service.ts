@@ -17,6 +17,10 @@ export class AlbumStorageService {
     return [...this.albums.values()];
   }
 
+  findMany(ids: string[]): Album[] {
+    return ids.map((id) => this.findOne(id)).filter((album): album is Album => album !== null);
+  }
+
   findOne(id: string): Album | null {
     return this.albums.get(id) ?? null;
   }

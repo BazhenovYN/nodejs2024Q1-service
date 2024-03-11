@@ -4,28 +4,39 @@ import { Album } from 'album/entities';
 import { Artist } from 'artist/entities';
 import { DatabaseService } from 'database/database.service';
 import { Track } from 'track/entities';
+import { Favorites } from './entities';
 
 @Injectable()
 export class FavoritesService {
   constructor(private db: DatabaseService) {}
 
-  findAll() {
-    return this.db.favorites.findAll();
+  findAll(): Favorites {
+    const favoritesIds = this.db.favorites.findAll();
+
+    const artists = this.db.artists.findMany(favoritesIds.artists);
+    const albums = this.db.albums.findMany(favoritesIds.albums);
+    const tracks = this.db.tracks.findMany(favoritesIds.tracks);
+
+    return {
+      artists,
+      albums,
+      tracks,
+    };
   }
 
   isArtistFavorite(artist: Artist) {
-    const favorites = this.db.favorites.findAll().artists;
-    return favorites.some((curr) => curr === artist);
+    const favoritesIds = this.db.favorites.findAll().artists;
+    return favoritesIds.some((id) => id === artist.id);
   }
 
   isAlbumFavorite(album: Album) {
     const favorites = this.db.favorites.findAll().albums;
-    return favorites.some((curr) => curr === album);
+    return favorites.some((id) => id === album.id);
   }
 
   isTrackFavorite(track: Track) {
     const favorites = this.db.favorites.findAll().tracks;
-    return favorites.some((curr) => curr === track);
+    return favorites.some((id) => id === track.id);
   }
 
   addArtist(id: string) {
@@ -35,7 +46,7 @@ export class FavoritesService {
       throw new UnprocessableEntityException('Artist not found');
     }
 
-    return this.db.favorites.addArtist(artist);
+    return this.db.favorites.addArtist(artist.id);
   }
 
   addAlbum(id: string) {
@@ -45,7 +56,7 @@ export class FavoritesService {
       throw new UnprocessableEntityException('Album not found');
     }
 
-    return this.db.favorites.addAlbum(album);
+    return this.db.favorites.addAlbum(album.id);
   }
 
   addTrack(id: string) {
@@ -55,7 +66,7 @@ export class FavoritesService {
       throw new UnprocessableEntityException('Track not found');
     }
 
-    return this.db.favorites.addTrack(track);
+    return this.db.favorites.addTrack(track.id);
   }
 
   deleteArtist(id: string) {
@@ -65,7 +76,7 @@ export class FavoritesService {
       throw new NotFoundException('Artist is not favorite');
     }
 
-    return this.db.favorites.deleteArtist(artist);
+    return this.db.favorites.deleteArtist(artist.id);
   }
 
   deleteAlbum(id: string) {
@@ -75,7 +86,7 @@ export class FavoritesService {
       throw new NotFoundException('Album is not favorite');
     }
 
-    return this.db.favorites.deleteAlbum(album);
+    return this.db.favorites.deleteAlbum(album.id);
   }
 
   deleteTrack(id: string) {
@@ -85,6 +96,6 @@ export class FavoritesService {
       throw new NotFoundException('Track is not favorite');
     }
 
-    return this.db.favorites.deleteTrack(track);
+    return this.db.favorites.deleteTrack(track.id);
   }
 }

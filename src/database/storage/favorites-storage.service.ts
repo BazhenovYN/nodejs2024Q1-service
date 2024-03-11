@@ -1,17 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
-import { Album } from 'album/entities';
-import { Artist } from 'artist/entities';
-import { Favorites } from 'favorites/entities';
-import { Track } from 'track/entities';
-
 @Injectable()
 export class FavoritesStorageService {
-  private artists = new Set<Artist>();
-  private albums = new Set<Album>();
-  private tracks = new Set<Track>();
+  private artists = new Set<string>();
+  private albums = new Set<string>();
+  private tracks = new Set<string>();
 
-  findAll(): Favorites {
+  findAll() {
     return {
       artists: [...this.artists.values()],
       albums: [...this.albums.values()],
@@ -19,27 +14,27 @@ export class FavoritesStorageService {
     };
   }
 
-  addArtist(artist: Artist) {
-    this.artists.add(artist);
+  addArtist(artistId: string) {
+    this.artists.add(artistId);
   }
 
-  addAlbum(album: Album) {
-    this.albums.add(album);
+  addAlbum(albumId: string) {
+    this.albums.add(albumId);
   }
 
-  addTrack(track: Track) {
-    this.tracks.add(track);
+  addTrack(trackId: string) {
+    this.tracks.add(trackId);
   }
 
-  deleteArtist(artist: Artist) {
-    this.artists.delete(artist);
+  deleteArtist(artistId: string) {
+    this.artists.delete(artistId);
   }
 
-  deleteAlbum(album: Album) {
-    this.albums.delete(album);
+  deleteAlbum(albumId: string) {
+    this.albums.delete(albumId);
   }
 
-  deleteTrack(track: Track) {
-    this.tracks.delete(track);
+  deleteTrack(trackId: string) {
+    this.tracks.delete(trackId);
   }
 }

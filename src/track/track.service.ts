@@ -9,7 +9,7 @@ export class TrackService {
 
   private clearFavorites(trackId: string) {
     const track = this.db.tracks.findOneOrThrow(trackId);
-    this.db.favorites.deleteTrack(track);
+    this.db.favorites.deleteTrack(track.id);
   }
 
   create(dto: CreateTrackDto) {

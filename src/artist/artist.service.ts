@@ -19,7 +19,7 @@ export class ArtistService {
 
   private clearFavorites(artistId: string) {
     const artist = this.db.artists.findOneOrThrow(artistId);
-    this.db.favorites.deleteArtist(artist);
+    this.db.favorites.deleteArtist(artist.id);
   }
 
   create(dto: CreateArtistDto) {

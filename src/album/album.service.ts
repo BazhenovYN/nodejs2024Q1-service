@@ -14,7 +14,7 @@ export class AlbumService {
 
   private clearFavorites(albumId: string) {
     const album = this.db.albums.findOneOrThrow(albumId);
-    this.db.favorites.deleteAlbum(album);
+    this.db.favorites.deleteAlbum(album.id);
   }
 
   create(dto: CreateAlbumDto) {

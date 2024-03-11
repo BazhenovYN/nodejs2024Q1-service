@@ -17,6 +17,10 @@ export class TrackStorageService {
     return [...this.tracks.values()];
   }
 
+  findMany(ids: string[]): Track[] {
+    return ids.map((id) => this.findOne(id)).filter((track): track is Track => track !== null);
+  }
+
   findOne(id: string): Track | null {
     return this.tracks.get(id) ?? null;
   }
