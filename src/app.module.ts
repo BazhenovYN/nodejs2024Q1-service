@@ -8,6 +8,7 @@ import { DatabaseModule } from 'database/database.module';
 import { FavoritesModule } from 'favorites/favorites.module';
 import { TrackModule } from 'track/track.module';
 import { UserModule } from 'user/user.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { UserModule } from 'user/user.module';
     TrackModule,
     AlbumModule,
     FavoritesModule,
+    PrismaModule,
   ],
 })
 export class AppModule {}
