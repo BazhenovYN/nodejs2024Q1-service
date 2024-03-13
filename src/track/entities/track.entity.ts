@@ -1,5 +1,4 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { v4 as uuidv4 } from 'uuid';
 
 export class Track {
   @ApiProperty({ format: 'uuid' })
@@ -19,7 +18,5 @@ export class Track {
 
   constructor(partial: Partial<Track>) {
     Object.assign(this, partial);
-
-    this.id = uuidv4();
   }
 }
