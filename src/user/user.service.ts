@@ -8,13 +8,13 @@ import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 
 import type { AppConfigType } from 'config';
-import { DatabaseService } from 'database/database.service';
+import { PrismaService } from 'prisma/prisma.service';
 import { CreateUserDto, UpdatePasswordDto } from './dto';
 
 @Injectable()
 export class UserService {
   constructor(
-    private db: DatabaseService,
+    private prisma: PrismaService,
     private config: ConfigService<AppConfigType, true>,
   ) {}
 
@@ -25,18 +25,26 @@ export class UserService {
 
   async create(dto: CreateUserDto) {
     const hash = await this.hashPassword(dto.password);
-    return this.db.users.create({
-      ...dto,
-      password: hash,
+
+    return this.prisma.user.create({
+      data: {
+        ...dto,
+        password: hash,
+        version: 1,
+      },
     });
   }
 
   findAll() {
-    return this.db.users.findAll();
+    return this.prisma.user.findMany();
   }
 
-  findOne(id: string) {
-    const user = this.db.users.findOne(id);
+  async findOne(id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -50,7 +58,7 @@ export class UserService {
       throw new BadRequestException('The new password matches the old password');
     }
 
-    const user = this.db.users.findOne(id);
+    const user = await this.findOne(id);
     const match = await bcrypt.compare(dto.oldPassword, user.password);
     if (!match) {
       throw new ForbiddenException('Old password incorrect');
@@ -58,10 +66,23 @@ export class UserService {
 
     const hash = await this.hashPassword(dto.newPassword);
 
-    return this.db.users.update(id, { password: hash });
+    return this.prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        password: hash,
+        version: user.version + 1,
+      },
+    });
   }
 
-  remove(id: string) {
-    return this.db.users.remove(id);
+  async remove(id: string) {
+    const user = await this.findOne(id);
+    return this.prisma.user.delete({
+      where: {
+        id: user.id,
+      },
+    });
   }
 }

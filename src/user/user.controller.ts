@@ -38,15 +38,17 @@ export class UserController {
   @ApiCreatedResponse({ type: User, description: 'The user has been created' })
   @ApiBadRequestResponse({ description: 'Bad request. Body does not contain required fields' })
   @Post()
-  create(@Body() dto: CreateUserDto) {
-    return this.userService.create(dto);
+  async create(@Body() dto: CreateUserDto) {
+    const user = await this.userService.create(dto);
+    return new User(user);
   }
 
   @ApiOperation({ summary: 'Get all users', description: 'Get all users' })
   @ApiOkResponse({ type: [User], description: 'Successful operation' })
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  async findAll() {
+    const users = await this.userService.findAll();
+    return users.map((user) => new User(user));
   }
 
   @ApiOperation({ summary: 'Get single user by id', description: 'Get single user by id' })
@@ -55,8 +57,9 @@ export class UserController {
   @ApiBadRequestResponse({ description: 'Bad request. userId is invalid (not uuid)' })
   @ApiNotFoundResponse({ description: 'User was not found' })
   @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.userService.findOne(id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    const user = await this.userService.findOne(id);
+    return new User(user);
   }
 
   @ApiOperation({
@@ -69,8 +72,9 @@ export class UserController {
   @ApiForbiddenResponse({ description: 'oldPassword is wrong' })
   @ApiNotFoundResponse({ description: 'User was not found' })
   @Put(':id')
-  updatePassword(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdatePasswordDto) {
-    return this.userService.updatePassword(id, dto);
+  async updatePassword(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdatePasswordDto) {
+    const user = await this.userService.updatePassword(id, dto);
+    return new User(user);
   }
 
   @ApiOperation({ summary: 'Delete user', description: 'Deletes user by ID' })
@@ -80,7 +84,8 @@ export class UserController {
   @ApiNotFoundResponse({ description: 'User was not found' })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  remove(@Param('id', ParseUUIDPipe) id: string) {
-    return this.userService.remove(id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    const user = await this.userService.remove(id);
+    return new User(user);
   }
 }

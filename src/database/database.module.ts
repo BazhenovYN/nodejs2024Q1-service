@@ -6,7 +6,6 @@ import {
   ArtistStorageService,
   FavoritesStorageService,
   TrackStorageService,
-  UserStorageService,
 } from './storage';
 
 @Global()
@@ -14,7 +13,6 @@ import {
   imports: [],
   providers: [
     DatabaseService,
-    UserStorageService,
     ArtistStorageService,
     TrackStorageService,
     AlbumStorageService,

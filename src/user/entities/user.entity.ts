@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude } from 'class-transformer';
-import { v4 as uuidv4 } from 'uuid';
+import { Exclude, Transform } from 'class-transformer';
 
 export class User {
   @ApiProperty({ format: 'uuid' })
@@ -16,17 +15,14 @@ export class User {
   version: number;
 
   @ApiProperty({ example: 1709931941478 })
-  createdAt: number;
+  @Transform(({ value }) => value.getTime())
+  createdAt: Date;
 
   @ApiProperty({ example: 1709932741613 })
-  updatedAt: number;
+  @Transform(({ value }) => value.getTime())
+  updatedAt: Date;
 
   constructor(partial: Partial<User>) {
     Object.assign(this, partial);
-
-    this.id = uuidv4();
-    this.version = 1;
-    this.createdAt = new Date().getTime();
-    this.updatedAt = this.createdAt;
   }
 }
