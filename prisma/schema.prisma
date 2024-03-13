@@ -75,7 +75,7 @@ model FavoriteAlbums {
 }
 
 model FavoriteTracks {
-  album   Track  @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  track   Track  @relation(fields: [trackId], references: [id], onDelete: Cascade)
   trackId String @id @unique
 
   @@map("favorite_tracks")
