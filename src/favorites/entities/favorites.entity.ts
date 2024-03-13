@@ -12,4 +12,8 @@ export class Favorites {
 
   @ApiProperty({ type: [Track] })
   tracks: Track[];
+
+  constructor(partial: Partial<Favorites>) {
+    Object.assign(this, partial);
+  }
 }
