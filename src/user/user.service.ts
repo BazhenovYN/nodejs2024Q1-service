@@ -24,6 +24,16 @@ export class UserService {
   }
 
   async create(dto: CreateUserDto) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        login: dto.login,
+      },
+    });
+
+    if (user) {
+      throw new BadRequestException('The login has already been taken by another user');
+    }
+
     const hash = await this.hashPassword(dto.password);
 
     return this.prisma.user.create({
