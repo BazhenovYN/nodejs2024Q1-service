@@ -82,7 +82,9 @@ export class UserService {
       },
       data: {
         password: hash,
-        version: user.version + 1,
+        version: {
+          increment: 1,
+        },
       },
     });
   }
