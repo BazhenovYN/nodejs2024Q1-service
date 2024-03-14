@@ -1,7 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { User as UserModel } from '@prisma/client';
+
 import { Exclude, Transform } from 'class-transformer';
 
-export class User {
+export class User implements UserModel {
+  constructor(partial: Partial<User>) {
+    Object.assign(this, partial);
+  }
+
   @ApiProperty({ format: 'uuid' })
   id: string;
 
@@ -21,8 +27,4 @@ export class User {
   @ApiProperty({ example: 1709932741613 })
   @Transform(({ value }) => value.getTime())
   updatedAt: Date;
-
-  constructor(partial: Partial<User>) {
-    Object.assign(this, partial);
-  }
 }

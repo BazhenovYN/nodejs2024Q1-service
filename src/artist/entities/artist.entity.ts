@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Artist as ArtistModel } from '@prisma/client';
 
-export class Artist {
+export class Artist implements ArtistModel {
   @ApiProperty({ format: 'uuid' })
   id: string;
 

@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Album as AlbumModel } from '@prisma/client';
 
-export class Album {
+export class Album implements AlbumModel {
   @ApiProperty({ format: 'uuid' })
   id: string;
 

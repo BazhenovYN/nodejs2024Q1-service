@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Track as TrackModel } from '@prisma/client';
 
-export class Track {
+export class Track implements TrackModel {
   @ApiProperty({ format: 'uuid' })
   id: string;
 
