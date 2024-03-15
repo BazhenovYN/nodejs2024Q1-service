@@ -1,0 +1,8 @@
+services:
+  rest-server:
+    user: "root:node"
+    build:
+      target: development
+    volumes:
+      - ./src:/usr/src/app/src
+    command: npm run start:dev

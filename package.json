@@ -9,6 +9,8 @@
     "node": ">=20.0.0"
   },
   "scripts": {
+    "docker:dev": "docker compose -f compose.yaml -f compose.dev.yaml up --build",
+    "docker:prod": "docker compose up --build",
     "prisma:generate": "npx prisma generate",
     "prisma:deploy": "prisma migrate deploy",
     "db:rm": "docker compose rm db -s -f -v",
