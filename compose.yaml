@@ -1,9 +1,8 @@
 version: '3.8'
 services:
   rest-server:
-    container_name: rest-server
-    build:
-      context: .
+    container_name: rest-api
+    image: bazhenovyn/hls-rest-api
     restart: always
     environment:
       PORT: $PORT
@@ -17,7 +16,7 @@ services:
       - network
   db:
     container_name: postgres
-    image: postgres:16.2-bullseye
+    image: bazhenovyn/hls-db
     restart: always
     environment:
       POSTGRES_USER: $POSTGRES_USER

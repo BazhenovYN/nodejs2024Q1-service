@@ -9,13 +9,13 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "docker:dev": "docker compose -f compose.yaml -f compose.dev.yaml up --build",
-    "docker:prod": "docker compose up --build",
-    "prisma:generate": "npx prisma generate",
+    "docker:dev": "docker compose -f compose.yaml -f compose.dev.yaml up -d --build",
+    "docker:prod": "docker compose up -d --build",
+    "prisma:generate": "prisma generate",
     "prisma:deploy": "prisma migrate deploy",
     "db:rm": "docker compose rm db -s -f -v",
     "db:up": "docker compose up db -d",
-    "db:restart": "npm run db:rm && npm run db:up && npm run prisma:deploy",
+    "db:reset": "npm run db:rm && npm run db:up && npm run prisma:deploy",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

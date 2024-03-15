@@ -1,4 +1,4 @@
-ARG NODE_VERSION=20.11.1-bullseye-slim
+ARG NODE_VERSION=20.11.1-alpine
 
 ################################################################################
 # BUILD FOR LOCAL DEVELOPMENT
@@ -10,7 +10,7 @@ WORKDIR /usr/src/app
 
 COPY --chown=node:node package*.json ./
 
-RUN npm ci
+RUN npm ci && npm cache clean --force
 
 COPY --chown=node:node . .
 
