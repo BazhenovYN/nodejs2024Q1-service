@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -6,6 +6,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppConfigType } from 'config';
 import { LoggerService } from 'logger/logger.service';
 import { AppModule } from './app.module';
+
+const logger = new Logger('Application');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -31,4 +33,12 @@ async function bootstrap() {
 
   await app.listen(port);
 }
+
+process.on('uncaughtException', (error) => {
+  logger.error(`Uncaught exception: ${error}`);
+});
+process.on('unhandledRejection', (error) => {
+  logger.error(`Unhandled Rejection: ${error}`);
+});
+
 bootstrap();
