@@ -4,15 +4,19 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppConfigType } from 'config';
+import { LoggerService } from 'logger/logger.service';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
     }),
   );
+  app.useLogger(app.get(LoggerService));
 
   const config = new DocumentBuilder()
     .setTitle('Home Library Service')
