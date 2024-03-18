@@ -11,6 +11,8 @@
   "scripts": {
     "docker:dev": "docker compose -f compose.yaml -f compose.dev.yaml up -d --build",
     "docker:prod": "docker compose up -d --build",
+    "docker:scout:api": "docker scout cves bazhenovyn/hls-rest-api",
+    "docker:scout:db": "docker scout cves bazhenovyn/hls-db",
     "prisma:generate": "prisma generate",
     "prisma:deploy": "prisma migrate deploy",
     "db:rm": "docker compose rm db -s -f -v",
