@@ -1,9 +1,10 @@
-import { Injectable, LogLevel } from '@nestjs/common';
+import { Injectable, LogLevel, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { WriteStream, createWriteStream, existsSync, mkdirSync } from 'node:fs';
+import { WriteStream, createWriteStream } from 'node:fs';
+import { access, mkdir } from 'node:fs/promises';
 import * as path from 'node:path';
 
-import { AppConfigType } from 'config';
+import type { AppConfigType } from 'config';
 
 interface Log {
   prefix: string;
@@ -12,7 +13,7 @@ interface Log {
 }
 
 @Injectable()
-export class FsService {
+export class FsService implements OnModuleInit {
   private logDir: string;
   private maxFileSize: number;
   private logs: Log[];
@@ -20,9 +21,6 @@ export class FsService {
   constructor(config: ConfigService<AppConfigType, true>) {
     this.maxFileSize = config.get('maxLogFileSizeBytes', { infer: true });
     this.logDir = config.get('logDir', { infer: true });
-    if (!existsSync(this.logDir)) {
-      mkdirSync(this.logDir, { recursive: true });
-    }
     this.initLogs();
   }
 
@@ -83,6 +81,22 @@ export class FsService {
     const logs = this.getLogsByLevel(level);
     for (const log of logs) {
       this.writeToLog(log, level, message, context);
+    }
+  }
+
+  async onModuleInit() {
+    await this.ensureLogDirectoryExists();
+  }
+
+  async ensureLogDirectoryExists() {
+    try {
+      await access(this.logDir);
+    } catch (error) {
+      if (error.code === 'ENOENT') {
+        await mkdir(this.logDir, { recursive: true });
+      } else {
+        throw error;
+      }
     }
   }
 }
