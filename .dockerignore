@@ -25,5 +25,6 @@
 **/values.dev.yaml
 **/build
 **/dist
+**/logs
 LICENSE
 README*.md

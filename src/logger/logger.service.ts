@@ -1,6 +1,8 @@
 import { ConsoleLogger, ConsoleLoggerOptions, Injectable, LogLevel } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+
 import { AppConfigType } from 'config';
+import { FsService } from './fs/fs.service';
 
 const getLogLevels = (level: number): LogLevel[] => {
   switch (level) {
@@ -25,6 +27,7 @@ export class LoggerService extends ConsoleLogger {
     context: string,
     options: ConsoleLoggerOptions,
     config: ConfigService<AppConfigType, true>,
+    private fs: FsService,
   ) {
     const level = config.get('logLevel', { infer: true });
 
@@ -36,31 +39,31 @@ export class LoggerService extends ConsoleLogger {
 
   log(message: any, context?: string) {
     super.log.apply(this, [message, context]);
-    // write the message to a file
+    this.fs.writeToFile('log', message, context);
   }
 
   fatal(message: any, context?: string) {
     super.fatal.apply(this, [message, context]);
-    // write the message to a file
+    this.fs.writeToFile('fatal', message, context);
   }
 
   error(message: any, stack?: string, context?: string) {
     super.error.apply(this, [message, stack, context]);
-    // write the message to a file
+    this.fs.writeToFile('error', message, context);
   }
 
   warn(message: any, context?: string) {
     super.warn.apply(this, [message, context]);
-    // write the message to a file
+    this.fs.writeToFile('warn', message, context);
   }
 
   debug(message: any, context?: string) {
     super.debug.apply(this, [message, context]);
-    // write the message to a file
+    this.fs.writeToFile('debug', message, context);
   }
 
   verbose(message: any, context?: string) {
     super.verbose.apply(this, [message, context]);
-    // write the message to a file
+    this.fs.writeToFile('verbose', message, context);
   }
 }

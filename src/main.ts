@@ -32,6 +32,7 @@ async function bootstrap() {
   const port = configService.get('port', { infer: true });
 
   await app.listen(port);
+  logger.log(`Application listening on port ${port}`);
 }
 
 process.on('uncaughtException', (error) => {
