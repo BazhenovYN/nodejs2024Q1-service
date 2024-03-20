@@ -11,6 +11,7 @@ import {
 
 import { User } from 'user/entities';
 import { AuthService } from './auth.service';
+import { Public } from './decorators';
 import { AuthDto } from './dto';
 import { LocalAuthGuard } from './guards';
 import { RequestWithUser } from './interfaces';
@@ -19,9 +20,10 @@ import { RequestWithUser } from './interfaces';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
   @ApiTags('Signup')
   @ApiOperation({ summary: 'Signup', description: 'Signup a user' })
-  @ApiCreatedResponse({ type: User, description: 'Successful signup' })
+  @ApiCreatedResponse({ description: 'Successful signup' })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @Post('signup')
   async signup(@Body() dto: AuthDto) {
@@ -29,15 +31,16 @@ export class AuthController {
     return new User(user);
   }
 
+  @Public()
   @ApiTags('Login')
   @ApiOperation({ summary: 'Login', description: 'Logins a user and returns a JWT-token' })
   @ApiBody({ type: AuthDto })
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ type: User, description: 'Successful login' })
+  @ApiOkResponse({ description: 'Successful login' })
   @ApiForbiddenResponse({ description: 'Incorrect login or password' })
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Req() request: RequestWithUser) {
-    return new User(request.user);
+    return this.authService.login(request.user);
   }
 }

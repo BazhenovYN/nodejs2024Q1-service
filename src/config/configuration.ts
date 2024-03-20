@@ -6,6 +6,7 @@ const DEFAULT_LOG_LEVEL = 0;
 const DEFAULT_MAX_LOG_FILE_SIZE_KB = 1024; // 1024KB=1MB
 const DEFAULT_LOG_DIR = './logs';
 const DEFAULT_JWT_SECRET = '61927fbcc2c571cba9f946ee5f8c1e449348181f322201ae21b4912f1a77ac5b';
+const DEFAULT_JWT_TOKEN_EXPIRE_TIME = '1h';
 
 const BYTES_PER_KILOBYTE = 1024;
 
@@ -26,6 +27,7 @@ export const appConfig = () => ({
     getInt(env.MAX_LOG_FILE_SIZE_KB, DEFAULT_MAX_LOG_FILE_SIZE_KB) * BYTES_PER_KILOBYTE,
   databaseUrl: getStr(env.DATABASE_URL),
   jwtSecret: getStr(env.JWT_SECRET_KEY, DEFAULT_JWT_SECRET),
+  jwtExpirationTime: getStr(env.JWT_TOKEN_EXPIRE_TIME, DEFAULT_JWT_TOKEN_EXPIRE_TIME),
 });
 
 export type AppConfigType = ReturnType<typeof appConfig>;

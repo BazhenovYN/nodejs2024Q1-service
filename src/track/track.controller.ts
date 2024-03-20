@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
@@ -26,6 +27,7 @@ import { Track } from './entities';
 import { TrackService } from './track.service';
 
 @ApiTags('Tracks')
+@ApiBearerAuth()
 @Controller('track')
 export class TrackController {
   constructor(private readonly trackService: TrackService) {}
