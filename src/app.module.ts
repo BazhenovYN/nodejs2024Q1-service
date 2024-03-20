@@ -10,6 +10,7 @@ import { LoggerModule } from 'logger/logger.module';
 import { PrismaModule } from 'prisma/prisma.module';
 import { TrackModule } from 'track/track.module';
 import { UserModule } from 'user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { UserModule } from 'user/user.module';
     FavoritesModule,
     PrismaModule,
     LoggerModule,
+    AuthModule,
   ],
 })
 export class AppModule implements NestModule {

@@ -63,6 +63,15 @@ export class UserService {
     return user;
   }
 
+  async findByLogin(login: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        login,
+      },
+    });
+    return user;
+  }
+
   async updatePassword(id: string, dto: UpdatePasswordDto) {
     if (dto.newPassword === dto.oldPassword) {
       throw new BadRequestException('The new password matches the old password');
@@ -96,5 +105,24 @@ export class UserService {
         id: user.id,
       },
     });
+  }
+
+  async validateUser(login: string, password: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        login,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return null;
+    }
+
+    return user;
   }
 }
