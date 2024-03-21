@@ -1,9 +1,10 @@
 import { ClassSerializerInterceptor, Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { NestFactory, Reflector } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppConfigType } from 'config';
+import { AllExceptionsFilter } from 'filters';
 import { LoggerService } from 'logger/logger.service';
 import { AppModule } from './app.module';
 
@@ -18,6 +19,9 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+  const httpAdapterHost = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapterHost));
+
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   app.useLogger(app.get(LoggerService));
 
