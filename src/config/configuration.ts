@@ -6,7 +6,10 @@ const DEFAULT_LOG_LEVEL = 0;
 const DEFAULT_MAX_LOG_FILE_SIZE_KB = 1024; // 1024KB=1MB
 const DEFAULT_LOG_DIR = './logs';
 const DEFAULT_JWT_SECRET = '61927fbcc2c571cba9f946ee5f8c1e449348181f322201ae21b4912f1a77ac5b';
+const DEFAULT_JWT_REFRESH_SECRET =
+  '3997b40944f544f6bbd8c023950c631184f0e7ab037468bd2fc02aa972cef68d';
 const DEFAULT_JWT_TOKEN_EXPIRE_TIME = '1h';
+const DEFAULT_JWT_REFRESH_TOKEN_EXPIRE_TIME = '24h';
 
 const BYTES_PER_KILOBYTE = 1024;
 
@@ -28,6 +31,11 @@ export const appConfig = () => ({
   databaseUrl: getStr(env.DATABASE_URL),
   jwtSecret: getStr(env.JWT_SECRET_KEY, DEFAULT_JWT_SECRET),
   jwtExpirationTime: getStr(env.JWT_TOKEN_EXPIRE_TIME, DEFAULT_JWT_TOKEN_EXPIRE_TIME),
+  jwtRefreshSecret: getStr(env.JWT_SECRET_REFRESH_KEY, DEFAULT_JWT_REFRESH_SECRET),
+  jwtRefreshExpirationTime: getStr(
+    env.JWT_TOKEN_REFRESH_EXPIRE_TIME,
+    DEFAULT_JWT_REFRESH_TOKEN_EXPIRE_TIME,
+  ),
 });
 
 export type AppConfigType = ReturnType<typeof appConfig>;

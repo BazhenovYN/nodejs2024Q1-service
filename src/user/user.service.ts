@@ -18,9 +18,9 @@ export class UserService {
     private config: ConfigService<AppConfigType, true>,
   ) {}
 
-  private async hashPassword(password: string) {
+  private async getHash(textValue: string) {
     const salt = this.config.get('salt', { infer: true });
-    return bcrypt.hash(password, salt);
+    return bcrypt.hash(textValue, salt);
   }
 
   async create(dto: CreateUserDto) {
@@ -34,7 +34,7 @@ export class UserService {
       throw new BadRequestException('The login has already been taken by another user');
     }
 
-    const hash = await this.hashPassword(dto.password);
+    const hash = await this.getHash(dto.password);
 
     return this.prisma.user.create({
       data: {
@@ -83,7 +83,7 @@ export class UserService {
       throw new ForbiddenException('Old password incorrect');
     }
 
-    const hash = await this.hashPassword(dto.newPassword);
+    const hash = await this.getHash(dto.newPassword);
 
     return this.prisma.user.update({
       where: {
@@ -98,6 +98,22 @@ export class UserService {
     });
   }
 
+  async updateRefreshToken(id: string, refreshToken: string) {
+    const hash = await this.getHash(refreshToken);
+
+    return this.prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        refreshToken: hash,
+        version: {
+          increment: 1,
+        },
+      },
+    });
+  }
+
   async remove(id: string) {
     const user = await this.findOne(id);
     return this.prisma.user.delete({
@@ -105,24 +121,5 @@ export class UserService {
         id: user.id,
       },
     });
-  }
-
-  async validateUser(login: string, password: string) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        login,
-      },
-    });
-
-    if (!user) {
-      return null;
-    }
-
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      return null;
-    }
-
-    return user;
   }
 }

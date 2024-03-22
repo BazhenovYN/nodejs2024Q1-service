@@ -12,8 +12,8 @@ import {
 import { User } from 'user/entities';
 import { AuthService } from './auth.service';
 import { Public } from './decorators';
-import { AuthDto } from './dto';
-import { LocalAuthGuard } from './guards';
+import { AuthDto, RefreshDto } from './dto';
+import { JwtRefreshGuard, LocalAuthGuard } from './guards';
 import { RequestWithUser } from './interfaces';
 
 @Controller('auth')
@@ -42,5 +42,16 @@ export class AuthController {
   @Post('login')
   async login(@Req() request: RequestWithUser) {
     return this.authService.login(request.user);
+  }
+
+  @Public()
+  @ApiTags('Refresh')
+  @ApiBody({ type: RefreshDto })
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ description: 'Successful refresh tokens' })
+  @UseGuards(JwtRefreshGuard)
+  @Post('refresh')
+  async refresh(@Req() request: RequestWithUser) {
+    return this.authService.refresh(request.user);
   }
 }
