@@ -38,6 +38,7 @@ export class AuthController {
   @ApiBody({ type: AuthDto })
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'Successful login' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiForbiddenResponse({ description: 'Incorrect login or password' })
   @UseGuards(LocalAuthGuard)
   @Post('login')

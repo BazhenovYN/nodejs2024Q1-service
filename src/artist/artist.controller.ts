@@ -20,6 +20,7 @@ import {
   ApiOperation,
   ApiParam,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 import { ArtistService } from './artist.service';
@@ -28,6 +29,7 @@ import { Artist } from './entities';
 
 @ApiTags('Artists')
 @ApiBearerAuth()
+@ApiUnauthorizedResponse({ description: 'Access token is missing or invalid' })
 @Controller('artist')
 export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}

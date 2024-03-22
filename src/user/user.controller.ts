@@ -13,6 +13,7 @@ import {
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiConflictResponse,
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiNoContentResponse,
@@ -21,6 +22,7 @@ import {
   ApiOperation,
   ApiParam,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 import { CreateUserDto, UpdatePasswordDto } from './dto';
@@ -29,12 +31,14 @@ import { UserService } from './user.service';
 
 @ApiTags('Users')
 @ApiBearerAuth()
+@ApiUnauthorizedResponse({ description: 'Access token is missing or invalid' })
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @ApiOperation({ summary: 'Create user', description: 'Create a new user' })
   @ApiCreatedResponse({ type: User, description: 'The user has been created' })
+  @ApiConflictResponse({ description: 'Conflict. Login already exists' })
   @ApiBadRequestResponse({ description: 'Bad request. Body does not contain required fields' })
   @Post()
   async create(@Body() dto: CreateUserDto) {

@@ -20,6 +20,7 @@ import {
   ApiOperation,
   ApiParam,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 import { CreateTrackDto, UpdateTrackDto } from './dto';
@@ -28,6 +29,7 @@ import { TrackService } from './track.service';
 
 @ApiTags('Tracks')
 @ApiBearerAuth()
+@ApiUnauthorizedResponse({ description: 'Access token is missing or invalid' })
 @Controller('track')
 export class TrackController {
   constructor(private readonly trackService: TrackService) {}

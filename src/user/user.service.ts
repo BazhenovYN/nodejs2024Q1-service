@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -31,7 +32,7 @@ export class UserService {
     });
 
     if (user) {
-      throw new BadRequestException('The login has already been taken by another user');
+      throw new ConflictException('The login has already been taken by another user');
     }
 
     const hash = await this.getHash(dto.password);
