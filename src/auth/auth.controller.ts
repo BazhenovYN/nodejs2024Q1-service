@@ -7,6 +7,7 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 import { User } from 'user/entities';
@@ -49,6 +50,8 @@ export class AuthController {
   @ApiBody({ type: RefreshDto })
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ description: 'Successful refresh tokens' })
+  @ApiForbiddenResponse()
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   async refresh(@Req() request: RequestWithUser) {
