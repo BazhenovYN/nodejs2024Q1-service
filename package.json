@@ -9,7 +9,7 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "docker:dev": "docker compose -f compose.yaml -f compose.dev.yaml up -d --build",
+    "docker:dev": "docker compose -f compose.yaml -f compose.dev.yaml up --build",
     "docker:prod": "docker compose up -d --build",
     "docker:scout:api": "docker scout cves bazhenovyn/hls-rest-api",
     "docker:scout:db": "docker scout cves bazhenovyn/hls-db",
