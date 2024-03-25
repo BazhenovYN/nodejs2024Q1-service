@@ -82,6 +82,9 @@ npm run format
 
 ## Docker
 
+> [!IMPORTANT]
+> Don't forget to create `.env` file first
+
 First run (containers startup and database initialization):
 
 ```bash
