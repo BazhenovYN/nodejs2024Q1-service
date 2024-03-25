@@ -4,6 +4,7 @@
 services:
   rest-server:
     user: "root:node"
+    image: bazhenovyn/hls-rest-api:dev
     build:
       target: development
     volumes:
