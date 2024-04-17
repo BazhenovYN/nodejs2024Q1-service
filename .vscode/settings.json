@@ -1,0 +1,10 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "cSpell.words": ["favs", "nestjs", "openapi", "signin", "signup", "uuidv"],
+  "editor.formatOnSave": true,
+  "[typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  }
+}

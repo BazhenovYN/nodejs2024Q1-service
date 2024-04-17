@@ -1,31 +1,44 @@
 # Home Library Service
 
-## Prerequisites
+## Installation
 
-- Git - [Download & Install Git](https://git-scm.com/downloads).
-- Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
+> [!IMPORTANT]
+> Please read the installation instructions carefully
 
-## Downloading
+1. Install Node.js [v20.11.0](https://nodejs.org/en/download)
 
+2. Clone this repository to local computer
+
+```bash
+git clone https://github.com/BazhenovYN/nodejs2024Q1-service.git
 ```
-git clone {repository URL}
+
+3. Navigate to the project directory
+
+```bash
+cd nodejs2024Q1-service
 ```
 
-## Installing NPM modules
+4. Install NPM modules
 
-```
+```bash
 npm install
+```
+
+5. Create a `.env` file based on the provided `.env.template`
+
+```bash
+cp .env.template .env
 ```
 
 ## Running application
 
-```
+```bash
 npm start
 ```
 
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
 ## Testing
 
@@ -33,40 +46,46 @@ After application running open new terminal and enter:
 
 To run all tests without authorization
 
-```
+```bash
 npm run test
 ```
 
 To run only one of all test suites
 
-```
+```bash
 npm run test -- <path to suite>
 ```
 
 To run all test with authorization
 
-```
+```bash
 npm run test:auth
 ```
 
 To run only specific test suite with authorization
 
-```
+```bash
 npm run test:auth -- <path to suite>
 ```
 
-### Auto-fix and format
+## Auto-fix and format
 
-```
+```bash
 npm run lint
 ```
 
-```
+```bash
 npm run format
 ```
 
-### Debugging in VSCode
+## Technologies
 
-Press <kbd>F5</kbd> to debug.
+Project is created with:
 
-For more information, visit: https://code.visualstudio.com/docs/editor/debugging
+* [NestJS](https://nestjs.com/)
+* [TypeScript](https://www.typescriptlang.org/)
+* [Jest](https://jestjs.io/)
+
+## License
+
+[MIT](./LICENSE)
