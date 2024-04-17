@@ -27,4 +27,7 @@ export class User implements UserModel {
   @ApiProperty({ example: 1709932741613 })
   @Transform(({ value }) => value.getTime())
   updatedAt: Date;
+
+  @Exclude()
+  refreshToken: string | null;
 }

@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
@@ -19,6 +20,7 @@ import {
   ApiOperation,
   ApiParam,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 import { AlbumService } from './album.service';
@@ -26,6 +28,8 @@ import { CreateAlbumDto, UpdateAlbumDto } from './dto';
 import { Album } from './entities';
 
 @ApiTags('Albums')
+@ApiBearerAuth()
+@ApiUnauthorizedResponse({ description: 'Access token is missing or invalid' })
 @Controller('album')
 export class AlbumController {
   constructor(private readonly albumService: AlbumService) {}

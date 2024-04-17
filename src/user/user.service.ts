@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -18,9 +19,9 @@ export class UserService {
     private config: ConfigService<AppConfigType, true>,
   ) {}
 
-  private async hashPassword(password: string) {
+  private async getHash(textValue: string) {
     const salt = this.config.get('salt', { infer: true });
-    return bcrypt.hash(password, salt);
+    return bcrypt.hash(textValue, salt);
   }
 
   async create(dto: CreateUserDto) {
@@ -31,10 +32,10 @@ export class UserService {
     });
 
     if (user) {
-      throw new BadRequestException('The login has already been taken by another user');
+      throw new ConflictException('The login has already been taken by another user');
     }
 
-    const hash = await this.hashPassword(dto.password);
+    const hash = await this.getHash(dto.password);
 
     return this.prisma.user.create({
       data: {
@@ -63,6 +64,15 @@ export class UserService {
     return user;
   }
 
+  async findByLogin(login: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        login,
+      },
+    });
+    return user;
+  }
+
   async updatePassword(id: string, dto: UpdatePasswordDto) {
     if (dto.newPassword === dto.oldPassword) {
       throw new BadRequestException('The new password matches the old password');
@@ -74,7 +84,7 @@ export class UserService {
       throw new ForbiddenException('Old password incorrect');
     }
 
-    const hash = await this.hashPassword(dto.newPassword);
+    const hash = await this.getHash(dto.newPassword);
 
     return this.prisma.user.update({
       where: {
@@ -82,6 +92,22 @@ export class UserService {
       },
       data: {
         password: hash,
+        version: {
+          increment: 1,
+        },
+      },
+    });
+  }
+
+  async updateRefreshToken(id: string, refreshToken: string) {
+    const hash = await this.getHash(refreshToken);
+
+    return this.prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        refreshToken: hash,
         version: {
           increment: 1,
         },
