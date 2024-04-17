@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  rest-server:
+    container_name: rest-api
+    # image: bazhenovyn/hls-rest-api
+    build: .
+    restart: always
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public
+    ports:
+      - $PORT:$PORT
+    depends_on:
+      - db
+    networks:
+      - network
+  db:
+    container_name: postgres
+    image: bazhenovyn/hls-db
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - $POSTGRES_PORT:$POSTGRES_PORT
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - network
+volumes:
+  db-data:
+networks:
+  network:

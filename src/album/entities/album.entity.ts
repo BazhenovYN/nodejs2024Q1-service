@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { v4 as uuidv4 } from 'uuid';
+import { Album as AlbumModel } from '@prisma/client';
 
-export class Album {
+export class Album implements AlbumModel {
   @ApiProperty({ format: 'uuid' })
   id: string;
 
@@ -16,6 +16,5 @@ export class Album {
 
   constructor(partial: Partial<Album>) {
     Object.assign(this, partial);
-    this.id = uuidv4();
   }
 }

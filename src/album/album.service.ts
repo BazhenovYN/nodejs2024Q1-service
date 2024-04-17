@@ -1,32 +1,30 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { DatabaseService } from 'database/database.service';
+import { PrismaService } from 'prisma/prisma.service';
 import { CreateAlbumDto, UpdateAlbumDto } from './dto';
 
 @Injectable()
 export class AlbumService {
-  constructor(private db: DatabaseService) {}
-
-  private clearAlbumInTracks(albumId: string) {
-    const tracks = this.db.tracks.findByAlbumId(albumId);
-    tracks.forEach((track) => this.db.tracks.update(track.id, { albumId: null }));
-  }
-
-  private clearFavorites(albumId: string) {
-    const album = this.db.albums.findOneOrThrow(albumId);
-    this.db.favorites.deleteAlbum(album.id);
-  }
+  constructor(private prisma: PrismaService) {}
 
   create(dto: CreateAlbumDto) {
-    return this.db.albums.create(dto);
+    return this.prisma.album.create({
+      data: {
+        ...dto,
+      },
+    });
   }
 
   findAll() {
-    return this.db.albums.findAll();
+    return this.prisma.album.findMany();
   }
 
-  findOne(id: string) {
-    const album = this.db.albums.findOneOrThrow(id);
+  async findOne(id: string) {
+    const album = await this.prisma.album.findUnique({
+      where: {
+        id,
+      },
+    });
 
     if (!album) {
       throw new NotFoundException('Album not found');
@@ -35,13 +33,24 @@ export class AlbumService {
     return album;
   }
 
-  update(id: string, dto: UpdateAlbumDto) {
-    return this.db.albums.update(id, dto);
+  async update(id: string, dto: UpdateAlbumDto) {
+    const album = await this.findOne(id);
+    return this.prisma.album.update({
+      where: {
+        id: album.id,
+      },
+      data: {
+        ...dto,
+      },
+    });
   }
 
-  remove(id: string) {
-    this.clearAlbumInTracks(id);
-    this.clearFavorites(id);
-    return this.db.albums.remove(id);
+  async remove(id: string) {
+    const album = await this.findOne(id);
+    return this.prisma.album.delete({
+      where: {
+        id: album.id,
+      },
+    });
   }
 }

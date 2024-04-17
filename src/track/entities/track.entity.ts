@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { v4 as uuidv4 } from 'uuid';
+import { Track as TrackModel } from '@prisma/client';
 
-export class Track {
+export class Track implements TrackModel {
   @ApiProperty({ format: 'uuid' })
   id: string;
 
@@ -19,7 +19,5 @@ export class Track {
 
   constructor(partial: Partial<Track>) {
     Object.assign(this, partial);
-
-    this.id = uuidv4();
   }
 }
