@@ -34,15 +34,17 @@ export class AlbumController {
   @ApiCreatedResponse({ type: Album, description: 'Album is created' })
   @ApiBadRequestResponse({ description: 'Bad request. Body does not contain required fields' })
   @Post()
-  create(@Body() createAlbumDto: CreateAlbumDto) {
-    return this.albumService.create(createAlbumDto);
+  async create(@Body() createAlbumDto: CreateAlbumDto) {
+    const album = await this.albumService.create(createAlbumDto);
+    return new Album(album);
   }
 
   @ApiOperation({ summary: 'Get albums list', description: 'Gets all library albums list' })
   @ApiOkResponse({ type: [Album], description: 'Successful operation' })
   @Get()
-  findAll() {
-    return this.albumService.findAll();
+  async findAll() {
+    const albums = await this.albumService.findAll();
+    return albums.map((album) => new Album(album));
   }
 
   @ApiOperation({ summary: 'Get single album by id', description: 'Get single album by id' })
@@ -51,8 +53,9 @@ export class AlbumController {
   @ApiBadRequestResponse({ description: 'Bad request. albumId is invalid (not uuid)' })
   @ApiNotFoundResponse({ description: 'Album was not found' })
   @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.albumService.findOne(id);
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    const album = await this.albumService.findOne(id);
+    return new Album(album);
   }
 
   @ApiOperation({
@@ -64,8 +67,9 @@ export class AlbumController {
   @ApiBadRequestResponse({ description: 'Bad request. albumId is invalid (not uuid)' })
   @ApiNotFoundResponse({ description: 'Album was not found' })
   @Put(':id')
-  update(@Param('id', ParseUUIDPipe) id: string, @Body() updateAlbumDto: UpdateAlbumDto) {
-    return this.albumService.update(id, updateAlbumDto);
+  async update(@Param('id', ParseUUIDPipe) id: string, @Body() updateAlbumDto: UpdateAlbumDto) {
+    const album = await this.albumService.update(id, updateAlbumDto);
+    return new Album(album);
   }
 
   @ApiOperation({ summary: 'Delete album', description: 'Delete album from library' })
@@ -75,7 +79,8 @@ export class AlbumController {
   @ApiNotFoundResponse({ description: 'Album was not found' })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  remove(@Param('id', ParseUUIDPipe) id: string) {
-    return this.albumService.remove(id);
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    const album = await this.albumService.remove(id);
+    return new Album(album);
   }
 }

@@ -1,0 +1,12 @@
+################################################################################
+# START THE CONTAINER IN DEV MODE
+################################################################################
+services:
+  rest-server:
+    user: "root:node"
+    image: bazhenovyn/hls-rest-api:dev
+    build:
+      target: development
+    volumes:
+      - ./src:/usr/src/app/src
+    command: npm run start:dev

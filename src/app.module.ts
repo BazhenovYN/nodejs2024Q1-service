@@ -4,10 +4,10 @@ import { ConfigModule } from '@nestjs/config';
 import { AlbumModule } from 'album/album.module';
 import { ArtistModule } from 'artist/artist.module';
 import { appConfig } from 'config';
-import { DatabaseModule } from 'database/database.module';
 import { FavoritesModule } from 'favorites/favorites.module';
 import { TrackModule } from 'track/track.module';
 import { UserModule } from 'user/user.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
@@ -17,10 +17,10 @@ import { UserModule } from 'user/user.module';
     }),
     UserModule,
     ArtistModule,
-    DatabaseModule,
     TrackModule,
     AlbumModule,
     FavoritesModule,
+    PrismaModule,
   ],
 })
 export class AppModule {}
